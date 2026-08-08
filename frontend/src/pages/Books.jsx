@@ -22,12 +22,17 @@ const Books = () => {
   }, []);
 
   return (
-    <div className="flex-1 bg-slate-100 py-12 px-6">
+    <div className="flex-1 bg-[#0F2A44] py-12 px-6">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold text-slate-900 mb-8">Book Catalog</h1>
+        <div className="text-center mb-10">
+          <h1 className="text-4xl font-serif font-bold text-[#F4D58D] mb-2">
+            The Catalog
+          </h1>
+          <div className="w-24 h-[2px] bg-[#F4D58D] mx-auto" />
+        </div>
 
-        {loading && <p className="text-slate-600">Loading books...</p>}
-        {error && <p className="text-red-600">{error}</p>}
+        {loading && <p className="text-[#F4D58D] text-center">Loading books...</p>}
+        {error && <p className="text-red-400 text-center">{error}</p>}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {books.map((book) => (
@@ -36,7 +41,7 @@ const Books = () => {
         </div>
 
         {!loading && books.length === 0 && !error && (
-          <p className="text-slate-600">No books available yet.</p>
+          <p className="text-[#F4D58D] text-center">No books available yet.</p>
         )}
       </div>
     </div>
