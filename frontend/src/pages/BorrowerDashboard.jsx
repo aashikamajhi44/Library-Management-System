@@ -61,14 +61,15 @@ const BorrowerDashboard = () => {
   };
 
   return (
-    <div className="flex-1 bg-slate-100 py-12 px-6">
+    <div className="flex-1 bg-[#0F2A44] py-12 px-6">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-slate-900 mb-2">
+        <h1 className="text-3xl font-serif font-bold text-[#F4D58D] mb-2">
           Welcome, {user?.name}
         </h1>
+        <div className="w-16 h-[2px] bg-[#C9A227] mb-8" />
 
         {isPending && (
-          <div className="bg-amber-100 border border-amber-400 text-amber-800 rounded p-4 mb-8">
+          <div className="bg-[#FDF8EE] border-2 border-[#C9A227] text-[#5A4A3A] rounded p-4 mb-8">
             Your account is pending librarian approval. You'll be able to borrow
             books once approved.
           </div>
@@ -76,19 +77,19 @@ const BorrowerDashboard = () => {
 
         {!isPending && (
           <>
-            <h2 className="text-xl font-semibold text-slate-900 mb-4">My Loans</h2>
-            {loading && <p className="text-slate-600">Loading...</p>}
-            {error && <p className="text-red-600">{error}</p>}
+            <h2 className="text-xl font-serif font-semibold text-[#F4D58D] mb-4">My Loans</h2>
+            {loading && <p className="text-slate-300">Loading...</p>}
+            {error && <p className="text-red-400">{error}</p>}
 
             <div className="space-y-3 mb-10">
               {loans.map((loan) => (
                 <div
                   key={loan._id}
-                  className="bg-white border border-slate-200 rounded p-4 flex justify-between items-center"
+                  className="bg-[#FDF8EE] border-2 border-[#1B4F82] rounded p-4 flex justify-between items-center"
                 >
                   <div>
-                    <p className="font-semibold text-slate-900">{loan.book?.title}</p>
-                    <p className="text-sm text-slate-500">
+                    <p className="font-serif font-semibold text-[#1B2A3A]">{loan.book?.title}</p>
+                    <p className="text-sm text-[#5A4A3A]">
                       Due: {new Date(loan.dueDate).toLocaleDateString()} — Status: {loan.status}
                       {loan.fine > 0 && ` — Fine: Rs. ${loan.fine}`}
                     </p>
@@ -97,13 +98,13 @@ const BorrowerDashboard = () => {
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleRenew(loan._id)}
-                        className="text-sm bg-slate-900 text-amber-400 px-3 py-1 rounded"
+                        className="text-sm bg-[#0F2A44] text-[#F4D58D] px-3 py-1 rounded"
                       >
                         Renew
                       </button>
                       <button
                         onClick={() => handleReturn(loan._id)}
-                        className="text-sm border border-slate-900 text-slate-900 px-3 py-1 rounded"
+                        className="text-sm border-2 border-[#0F2A44] text-[#0F2A44] px-3 py-1 rounded"
                       >
                         Return
                       </button>
@@ -112,35 +113,35 @@ const BorrowerDashboard = () => {
                 </div>
               ))}
               {!loading && loans.length === 0 && (
-                <p className="text-slate-600">No loans yet.</p>
+                <p className="text-slate-300">No loans yet.</p>
               )}
             </div>
 
-            <h2 className="text-xl font-semibold text-slate-900 mb-4">Leave Feedback</h2>
+            <h2 className="text-xl font-serif font-semibold text-[#F4D58D] mb-4">Leave Feedback</h2>
             <form
               onSubmit={handleFeedbackSubmit}
-              className="bg-white border border-slate-200 rounded p-4 max-w-md"
+              className="bg-[#FDF8EE] border-2 border-[#C9A227] rounded p-4 max-w-md"
             >
-              {feedbackMsg && <p className="text-sm text-amber-700 mb-2">{feedbackMsg}</p>}
-              <label className="block text-sm text-slate-700 mb-1">Rating (1-5)</label>
+              {feedbackMsg && <p className="text-sm text-[#1B4F82] font-semibold mb-2">{feedbackMsg}</p>}
+              <label className="block text-sm text-[#5A4A3A] mb-1 font-semibold">Rating (1-5)</label>
               <input
                 type="number"
                 min="1"
                 max="5"
                 value={feedbackRating}
                 onChange={(e) => setFeedbackRating(Number(e.target.value))}
-                className="w-full border border-slate-300 rounded px-3 py-2 mb-3"
+                className="w-full border-2 border-[#1B4F82]/30 bg-white rounded px-3 py-2 mb-3"
               />
-              <label className="block text-sm text-slate-700 mb-1">Comment</label>
+              <label className="block text-sm text-[#5A4A3A] mb-1 font-semibold">Comment</label>
               <textarea
                 value={feedbackComment}
                 onChange={(e) => setFeedbackComment(e.target.value)}
                 required
-                className="w-full border border-slate-300 rounded px-3 py-2 mb-3"
+                className="w-full border-2 border-[#1B4F82]/30 bg-white rounded px-3 py-2 mb-3"
               />
               <button
                 type="submit"
-                className="bg-slate-900 text-amber-400 font-semibold px-4 py-2 rounded"
+                className="bg-[#0F2A44] text-[#F4D58D] font-serif font-semibold px-4 py-2 rounded"
               >
                 Submit Feedback
               </button>
