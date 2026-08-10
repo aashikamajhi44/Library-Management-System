@@ -1,6 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
+const dashboardPath = (role) => {
+  if (role === "admin") return "/admin-dashboard";
+  if (role === "librarian") return "/librarian-dashboard";
+  return "/borrower-dashboard";
+};
+
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -34,10 +40,7 @@ const Navbar = () => {
 
         {user && (
           <>
-            <Link
-              to={user.role === "librarian" ? "/librarian-dashboard" : "/borrower-dashboard"}
-              className="hover:text-white"
-            >
+            <Link to={dashboardPath(user.role)} className="hover:text-white">
               Dashboard
             </Link>
             <button
