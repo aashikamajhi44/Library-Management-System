@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import BorrowerDashboard from "./pages/BorrowerDashboard";
 import LibrarianDashboard from "./pages/LibrarianDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   return (
@@ -37,6 +38,14 @@ function App() {
               element={
                 <ProtectedRoute allowedRole="librarian">
                   <LibrarianDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin-dashboard"
+              element={
+                <ProtectedRoute allowedRole="admin">
+                  <AdminDashboard />
                 </ProtectedRoute>
               }
             />
