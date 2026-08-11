@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
+import DashboardSidebar from "../components/DashboardSidebar";
 
 const BorrowerDashboard = () => {
   const { user } = useAuth();
   const [loans, setLoans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [active, setActive] = useState("loans");
+
   const [feedbackRating, setFeedbackRating] = useState(5);
   const [feedbackComment, setFeedbackComment] = useState("");
   const [feedbackMsg, setFeedbackMsg] = useState("");
@@ -60,32 +63,44 @@ const BorrowerDashboard = () => {
     }
   };
 
-  return (
-    <div className="flex-1 bg-[#0F2A44] py-12 px-6">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-serif font-bold text-[#F4D58D] mb-2">
-          Welcome, {user?.name}
-        </h1>
-        <div className="w-16 h-[2px] bg-[#C9A227] mb-8" />
+  const items = isPending
+    ? [{ key: "loans", label: "My Loans" }]
+    : [
+        { key: "loans", label: "My Loans", count: loans.length },
+        { key: "feedback", label: "Give Feedback" },
+      ];
 
+  return (
+    <div className="flex-1 flex flex-col md:flex-row bg-[#FDF8EE]">
+      <DashboardSidebar
+        title={user?.name || "Borrower"}
+        subtitle="My Library Card"
+        items={items}
+        active={active}
+        onSelect={setActive}
+      />
+
+      <main className="flex-1 p-8 max-w-4xl">
         {isPending && (
-          <div className="bg-[#FDF8EE] border-2 border-[#C9A227] text-[#5A4A3A] rounded p-4 mb-8">
+          <div className="bg-white border-2 border-[#C9A227] text-[#5A4A3A] rounded p-4">
             Your account is pending librarian approval. You'll be able to borrow
             books once approved.
           </div>
         )}
 
-        {!isPending && (
+        {!isPending && active === "loans" && (
           <>
-            <h2 className="text-xl font-serif font-semibold text-[#F4D58D] mb-4">My Loans</h2>
-            {loading && <p className="text-slate-300">Loading...</p>}
-            {error && <p className="text-red-400">{error}</p>}
+            <h1 className="text-2xl font-serif font-bold text-[#1B2A3A] mb-1">My Loans</h1>
+            <div className="w-16 h-[2px] bg-[#C9A227] mb-6" />
 
-            <div className="space-y-3 mb-10">
+            {loading && <p className="text-[#5A4A3A]">Loading...</p>}
+            {error && <p className="text-red-700">{error}</p>}
+
+            <div className="space-y-3">
               {loans.map((loan) => (
                 <div
                   key={loan._id}
-                  className="bg-[#FDF8EE] border-2 border-[#1B4F82] rounded p-4 flex justify-between items-center"
+                  className="bg-white border-2 border-[#1B4F82] rounded p-4 flex justify-between items-center"
                 >
                   <div>
                     <p className="font-serif font-semibold text-[#1B2A3A]">{loan.book?.title}</p>
@@ -113,14 +128,19 @@ const BorrowerDashboard = () => {
                 </div>
               ))}
               {!loading && loans.length === 0 && (
-                <p className="text-slate-300">No loans yet.</p>
+                <p className="text-[#5A4A3A]">No loans yet.</p>
               )}
             </div>
+          </>
+        )}
 
-            <h2 className="text-xl font-serif font-semibold text-[#F4D58D] mb-4">Leave Feedback</h2>
+        {!isPending && active === "feedback" && (
+          <>
+            <h1 className="text-2xl font-serif font-bold text-[#1B2A3A] mb-1">Leave Feedback</h1>
+            <div className="w-16 h-[2px] bg-[#C9A227] mb-6" />
             <form
               onSubmit={handleFeedbackSubmit}
-              className="bg-[#FDF8EE] border-2 border-[#C9A227] rounded p-4 max-w-md"
+              className="bg-white border-2 border-[#C9A227] rounded p-4 max-w-md"
             >
               {feedbackMsg && <p className="text-sm text-[#1B4F82] font-semibold mb-2">{feedbackMsg}</p>}
               <label className="block text-sm text-[#5A4A3A] mb-1 font-semibold">Rating (1-5)</label>
@@ -148,7 +168,7 @@ const BorrowerDashboard = () => {
             </form>
           </>
         )}
-      </div>
+      </main>
     </div>
   );
 };
