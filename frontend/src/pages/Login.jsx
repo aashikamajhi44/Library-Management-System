@@ -2,6 +2,12 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
+const dashboardPath = (role) => {
+  if (role === "admin") return "/admin-dashboard";
+  if (role === "librarian") return "/librarian-dashboard";
+  return "/borrower-dashboard";
+};
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +20,7 @@ const Login = () => {
     setError("");
     try {
       const data = await login(email, password);
-      navigate(data.role === "librarian" ? "/librarian-dashboard" : "/borrower-dashboard");
+      navigate(dashboardPath(data.role));
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
     }
